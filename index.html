@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="es" ng-app="app">
+<head>
+    <link rel="icon" type="image/png" href="img/favicon.png">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gartner Store Catalogo</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script src="script.js"></script>
+    <script src="app.js"></script>
+    <link rel="stylesheet" href="custom.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-rc.2/lazyload.js"></script>
+</head>
+<body class="bg-light open-{{loading3}}" ng-controller="gartner">
+    <main class="container">
+         <div class="my-3 p-3 bg-white rounded shadow-sm">
+            <img src="https://gartner-store.com/wp-content/uploads/2021/09/logo-positivo.png" class="logo" alt="Gartner Store" id="logo">
+            <div class="aviso" ng-if="!loading">
+                <ul>
+                    <li><b>¡IMPORTANTE!</b> No planchar el estampado ni usar secadora.</li>
+                    <li>Tela 100% algodón peinado 👕</li>
+                    <li>Todas las tallas disponibles: desde la 4 hasta la XXL</li>
+                    <li>Contáctanos 📱 para verificar colores disponibles</li>
+                    <li><b>PRECIOS: 💰</b> Todas las prendas tienen el mismo precio</li>
+                    <li>$29.000 por unidad</li>
+                    <li>$25.000 despues de 6 unidades</li>
+                    <li>El costo de envío 🚚  es de $15.000</li>
+                </ul>
+            </div>{{loader}}
+            <img src="img/loader.gif" class="loader" ng-if="loading">
+            <div ng-if="!loading && !categoria">
+                <br>
+                <h2 class="text-center">Catálogo</h2>
+                <br>
+                <div class="row">
+                    <div class="col-12 col-sm-6 col-md-3" ng-repeat="categoria in categorias">
+                        <div class="card text-center" ng-click="getPosts(categoria)">
+                            <img class="card-img-top" src="{{'img/' + categoria.id + '.png'}}">
+                            <div class="card-body">
+                                <h4 class="card-title">{{categoria.name}}</h4>
+                                <button href="#" class="btn btn-success">Abrir</button>
+                            </div>
+                        </div>
+                        <br>
+                    </div>
+                </div>
+            </div>
+
+            <div ng-if="!loading && categoria">
+                <br>
+                <div class="close" ng-click="back()">X</div>
+                <h2 class="text-center">{{categoria.name}}</h2>
+                <br>
+                <div class="row">
+                    <div class="col-12 col-sm-6 col-md-3" ng-repeat="post in posts">
+                        <div class="card text-center">
+                            <img class="card-img-top" src="{{post._embedded['wp:featuredmedia']['0'].media_details.sizes.shop_single.source_url}}">
+                            <div class="card-body">
+                                <h4 class="card-title">{{post.title.rendered}}</h4>
+                            </div>
+                        </div>
+                        <br>
+                    </div>
+
+                    <div ng-if="categorias2.length" class="text-center">
+                        <hr>
+                        <h4>Selecciona una Categoría</h4>
+                        <div class="row">
+                            <div class="col-6 col-sm-6 col-md-3" ng-repeat="post in categorias2">
+                                <div class="card text-center" ng-click="getProductos(post.id)">
+                                    <img class="card-img-top" src="{{post.image.src}}">
+                                    <div class="card-body">
+                                        <h4 class="card-title">{{post.name}} ({{post.count}})</h4>
+                                        <button class="btn btn-success">Abrir</button>
+                                    </div>
+                                </div>
+                                <br>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- <button href="#" class="btn btn-success btn-center" ng-click="getCategorias()" ng-if="!loading2 && !categorias2.length">Ver mas</button> -->
+                <img src="img/loader.gif" class="loader loaderw" ng-if="loading2">
+            </div>
+        </div>
+        <a href="#logo">
+            <img src="img/up.png" alt="up" class="top-icon">
+        </a>
+        <div class="iconos">
+            <a href="http://wa.link/pfljoe" target="_blank">
+                <img src="img/whatsapp.png" alt="whatsapp">
+            </a>
+            <a href="https://www.instagram.com/gartnerstore/" target="_blank">
+                <img src="img/instagram.png" alt="instagram">
+            </a>
+        </div>
+    </main>
+    <div class="products-wrapper" ng-if="loading3">
+        <div class="close" ng-click="close()">X</div>
+        <div class="products-content" ng-if="products.length">
+            <div class="col-12 col-sm-6 col-md-3" ng-repeat="post in products">
+                <div class="card text-center">
+                    <img class="card-img-top" src="{{post.images[0].src}}">
+                    <!-- <div class="card-body">
+                        <h4 class="card-title">{{post.name}}</h4>
+                    </div> -->
+                </div>
+                <br>
+            </div>
+        </div>
+    </div>
+</body>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-P13QGBW68S"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-P13QGBW68S');
+</script>
+</html>
