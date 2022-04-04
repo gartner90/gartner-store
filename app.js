@@ -11,6 +11,8 @@ angular.module('app', ['components'])
     $scope.page = 1;
     $scope.pagePost = 1;
     $scope.pageCat = 1;
+    $scope.testimonios = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+    $scope.loadingTestimonios = false;
     
     $scope.categorias = [
         {name: 'Mujer', id: 210, store: 19},
@@ -102,5 +104,11 @@ angular.module('app', ['components'])
         }
       
         return array;
+    }
+
+    $scope.openTestimonios = function() {
+        $scope.loadingTestimonios = !$scope.loadingTestimonios;
+        _gaq.push(['_trackEvent', 'Clicks', 'Testimonios', 'Testimonios abiertos ' + $scope.loadingTestimonios]);
+
     }
 });

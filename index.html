@@ -17,7 +17,7 @@
 <body class="bg-light open-{{loading3}}" ng-controller="gartner">
     <main class="container">
          <div class="my-3 p-3 bg-white rounded shadow-sm">
-            <img src="https://gartner-store.com/wp-content/uploads/2021/09/logo-positivo.png" class="logo" alt="Gartner Store" id="logo">
+            <img src="https://gartner-store.com/wp-content/uploads/2021/09/logo-positivo.png" class="logo" alt="Gartner Store" id="logo" loading="lazy">
             <div class="aviso" ng-if="!loading">
                 <ul>
                     <li><b>¡IMPORTANTE!</b> No planchar el estampado ni usar secadora.</li>
@@ -28,9 +28,12 @@
                     <li>$29.000 por unidad</li>
                     <li>$25.000 despues de 6 unidades</li>
                     <li>El costo de envío 🚚  es de $15.000</li>
+                    <li>Pagas al recibir en tu casa 🏠</li>
+                    <li><b> POR FAVOR REALIZAR PEDIDO SOLO SI ESTAS DISPUESTO A RECIBIRLO 🙏</b></li>
                 </ul>
+                <button class="btn btn-success" ng-click="openTestimonios()">Ver Testimonios</button>
             </div>{{loader}}
-            <img src="img/loader.gif" class="loader" ng-if="loading">
+            <img src="img/loader.gif" class="loader" ng-if="loading" loading="lazy">
             <div ng-if="!loading && !categoria">
                 <br>
                 <h2 class="text-center">Catálogo</h2>
@@ -38,10 +41,10 @@
                 <div class="row">
                     <div class="col-12 col-sm-6 col-md-3" ng-repeat="categoria in categorias">
                         <div class="card text-center" ng-click="getPosts(categoria)">
-                            <img class="card-img-top" src="{{'img/' + categoria.id + '.png'}}">
+                            <img class="card-img-top" src="{{'img/' + categoria.id + '.png'}}" loading="lazy">
                             <div class="card-body">
                                 <h4 class="card-title">{{categoria.name}}</h4>
-                                <button href="#" class="btn btn-success">Abrir</button>
+                                <button class="btn btn-success">Abrir</button>
                             </div>
                         </div>
                         <br>
@@ -57,7 +60,7 @@
                 <div class="row">
                     <div class="col-12 col-sm-6 col-md-3" ng-repeat="post in posts">
                         <div class="card text-center">
-                            <img class="card-img-top" src="{{post._embedded['wp:featuredmedia']['0'].media_details.sizes.shop_single.source_url}}">
+                            <img class="card-img-top" src="{{post._embedded['wp:featuredmedia']['0'].media_details.sizes.shop_single.source_url}}" loading="lazy">
                             <div class="card-body">
                                 <h4 class="card-title">{{post.title.rendered}}</h4>
                             </div>
@@ -71,7 +74,7 @@
                         <div class="row">
                             <div class="col-6 col-sm-6 col-md-3" ng-repeat="post in categorias2">
                                 <div class="card text-center" ng-click="getProductos(post.id)">
-                                    <img class="card-img-top" src="{{post.image.src}}">
+                                    <img class="card-img-top" src="{{post.image.src}}" loading="lazy">
                                     <div class="card-body">
                                         <h4 class="card-title">{{post.name}} ({{post.count}})</h4>
                                         <button class="btn btn-success">Abrir</button>
@@ -83,7 +86,7 @@
                     </div>
                 </div>
                 <!-- <button href="#" class="btn btn-success btn-center" ng-click="getCategorias()" ng-if="!loading2 && !categorias2.length">Ver mas</button> -->
-                <img src="img/loader.gif" class="loader loaderw" ng-if="loading2">
+                <img src="img/loader.gif" class="loader loaderw" ng-if="loading2" loading="lazy">
             </div>
         </div>
         <a href="#logo">
@@ -100,15 +103,27 @@
     </main>
     <div class="products-wrapper" ng-if="loading3">
         <div class="close" ng-click="close()">X</div>
-        <div class="products-content" ng-if="products.length">
-            <div class="col-12 col-sm-6 col-md-3" ng-repeat="post in products">
-                <div class="card text-center">
-                    <img class="card-img-top" src="{{post.images[0].src}}">
-                    <!-- <div class="card-body">
-                        <h4 class="card-title">{{post.name}}</h4>
-                    </div> -->
+        <div class="products-content container" ng-if="products.length">
+            <div class="row">
+                <div class="col-12 col-sm-6 col-md-3" ng-repeat="post in products">
+                    <div class="card text-center">
+                        <img class="card-img-top" src="{{post.images[0].src}}">
+                    </div>
+                    <br>
                 </div>
-                <br>
+            </div>
+        </div>
+    </div>
+    <div class="products-wrapper" ng-if="loadingTestimonios">
+        <div class="close" ng-click="openTestimonios()">X</div>
+        <div class="products-content container">
+            <div class="row">
+                <div class="col-12 col-sm-6 col-md-3" ng-repeat="obj in testimonios">
+                    <div class="card text-center">
+                        <img class="card-img-top" src="{{'img/t' + obj + '.jpeg'}}">
+                    </div>
+                    <br>
+                </div>
             </div>
         </div>
     </div>
